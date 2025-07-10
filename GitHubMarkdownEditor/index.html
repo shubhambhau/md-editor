@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Markdown Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>GitHub Markdown Editor</h1>
+            <div class="header-controls">
+                <button id="helpBtn" class="btn btn-secondary">
+                    <span class="icon">?</span>
+                    Keyboard Shortcuts
+                </button>
+                <div class="theme-toggle">
+                    <button id="themeToggle" class="btn btn-secondary">
+                        <span class="icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <button id="boldBtn" class="btn btn-toolbar" title="Bold (Ctrl+B)">
+                        <span class="icon">B</span>
+                    </button>
+                    <button id="italicBtn" class="btn btn-toolbar" title="Italic (Ctrl+I)">
+                        <span class="icon">I</span>
+                    </button>
+                    <button id="strikethroughBtn" class="btn btn-toolbar" title="Strikethrough">
+                        <span class="icon">S</span>
+                    </button>
+                    <button id="underlineBtn" class="btn btn-toolbar" title="Underline">
+                        <span class="icon">U</span>
+                    </button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button id="codeBtn" class="btn btn-toolbar" title="Code (Ctrl+E)">
+                        <span class="icon">&lt;/&gt;</span>
+                    </button>
+                    <button id="codeBlockBtn" class="btn btn-toolbar" title="Code Block">
+                        <span class="icon">{ }</span>
+                    </button>
+                    <button id="quoteBtn" class="btn btn-toolbar" title="Quote (Ctrl+Shift+.)">
+                        <span class="icon">"</span>
+                    </button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button id="linkBtn" class="btn btn-toolbar" title="Link (Ctrl+K)">
+                        <span class="icon">🔗</span>
+                    </button>
+                    <button id="imageBtn" class="btn btn-toolbar" title="Image">
+                        <span class="icon">🖼️</span>
+                    </button>
+                    <button id="uploadBtn" class="btn btn-toolbar" title="Upload Asset">
+                        <span class="icon">📎</span>
+                    </button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button id="unorderedListBtn" class="btn btn-toolbar" title="Unordered List (Ctrl+Shift+8)">
+                        <span class="icon">•</span>
+                    </button>
+                    <button id="orderedListBtn" class="btn btn-toolbar" title="Ordered List (Ctrl+Shift+7)">
+                        <span class="icon">1.</span>
+                    </button>
+                    <button id="taskListBtn" class="btn btn-toolbar" title="Task List">
+                        <span class="icon">☑️</span>
+                    </button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button id="tableBtn" class="btn btn-toolbar" title="Table">
+                        <span class="icon">⚏</span>
+                    </button>
+                    <button id="emojiBtn" class="btn btn-toolbar" title="Emoji">
+                        <span class="icon">😀</span>
+                    </button>
+                    <button id="footnoteBtn" class="btn btn-toolbar" title="Footnote">
+                        <span class="icon">¹</span>
+                    </button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <select id="alertSelect" class="btn btn-toolbar alert-select">
+                        <option value="">Alert</option>
+                        <option value="note">Note</option>
+                        <option value="tip">Tip</option>
+                        <option value="important">Important</option>
+                        <option value="warning">Warning</option>
+                        <option value="caution">Caution</option>
+                    </select>
+                    <select id="headingSelect" class="btn btn-toolbar heading-select">
+                        <option value="">Heading</option>
+                        <option value="1">H1</option>
+                        <option value="2">H2</option>
+                        <option value="3">H3</option>
+                        <option value="4">H4</option>
+                        <option value="5">H5</option>
+                        <option value="6">H6</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-content split-view">
+                    <div class="editor-panel">
+                        <div class="panel-header">
+                            <h3>Write</h3>
+                        </div>
+                        <textarea id="editor" placeholder="Start typing your markdown here...
+
+# Welcome to GitHub Markdown Editor
+
+This editor supports all GitHub markdown features including:
+
+- **Bold** and *italic* text
+- ~~Strikethrough~~ text
+- `inline code` and code blocks
+- [Links](https://github.com)
+- > Blockquotes
+- Lists and task lists
+- Tables
+- Emoji :smile: (click the emoji button to see the full picker with shortcode support)
+- Footnotes[^1]
+- Alerts and much more!
+
+## GitHub-style Alerts
+
+> [!NOTE]
+> This is a note alert with helpful information
+
+> [!TIP]
+> This is a tip alert with useful suggestions
+
+> [!IMPORTANT]
+> This is an important alert that highlights critical information
+
+> [!WARNING]
+> This is a warning alert about potential issues
+
+> [!CAUTION]
+> This is a caution alert about dangerous actions
+
+## Emoji Reference
+
+For the complete emoji list and shortcodes, check the [GitHub Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet).
+
+[^1]: This is a footnote
+
+Try using keyboard shortcuts like Ctrl+B for bold, Ctrl+I for italic, etc."></textarea>
+                    </div>
+                    
+                    <div class="preview-panel">
+                        <div class="panel-header">
+                            <h3>Preview</h3>
+                        </div>
+                        <div id="preview" class="preview-content"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <span>Words: <span id="wordCount">0</span></span>
+                <span>Characters: <span id="charCount">0</span></span>
+                <span>Lines: <span id="lineCount">0</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- File Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Asset</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-text">
+                        <span class="icon">📎</span>
+                        <p>Drag and drop files here or click to select</p>
+                        <input type="file" id="fileInput" multiple accept="image/*,.pdf,.doc,.docx,.txt,.md">
+                    </div>
+                </div>
+                <div class="upload-progress" id="uploadProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">Uploading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Keyboard Shortcuts</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcuts-grid">
+                    <div class="shortcut-category">
+                        <h4>Text Formatting</h4>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+B</span>
+                            <span class="shortcut-desc">Bold</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+I</span>
+                            <span class="shortcut-desc">Italic</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+E</span>
+                            <span class="shortcut-desc">Inline Code</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+K</span>
+                            <span class="shortcut-desc">Link</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+Shift+.</span>
+                            <span class="shortcut-desc">Quote</span>
+                        </div>
+                    </div>
+
+                    <div class="shortcut-category">
+                        <h4>Lists</h4>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+Shift+7</span>
+                            <span class="shortcut-desc">Ordered List</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+Shift+8</span>
+                            <span class="shortcut-desc">Unordered List</span>
+                        </div>
+                    </div>
+
+                    <div class="shortcut-category">
+                        <h4>Editor</h4>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+Z</span>
+                            <span class="shortcut-desc">Undo</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+Y</span>
+                            <span class="shortcut-desc">Redo</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+F</span>
+                            <span class="shortcut-desc">Find</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-key">Ctrl+G</span>
+                            <span class="shortcut-desc">Find Next</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emoji Picker -->
+    <div id="emojiPicker" class="emoji-picker">
+        <div class="emoji-picker-header">
+            <h3>Choose an emoji</h3>
+            <div class="emoji-picker-options">
+                <label class="emoji-option">
+                    <input type="checkbox" id="useShortcode" />
+                    <span>Use shortcode</span>
+                </label>
+                <a href="https://github.com/ikatyang/emoji-cheat-sheet" target="_blank" class="emoji-cheat-link">
+                    📋 Emoji Cheat Sheet
+                </a>
+            </div>
+        </div>
+        <div class="emoji-grid" id="emojiGrid"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
