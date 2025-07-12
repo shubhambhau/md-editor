@@ -86,6 +86,12 @@
                     <button id="emojiBtn" class="btn btn-toolbar" title="Emoji">
                         <span class="icon">😀</span>
                     </button>
+                    <button id="githubStatsBtn" class="btn btn-toolbar" title="GitHub Stats">
+                        <span class="icon">📊</span>
+                    </button>
+                    <button id="typingSvgBtn" class="btn btn-toolbar" title="Typing SVG">
+                        <span class="icon">⌨️</span>
+                    </button>
                     <button id="footnoteBtn" class="btn btn-toolbar" title="Footnote">
                         <span class="icon">¹</span>
                     </button>
@@ -269,6 +275,63 @@ Try using keyboard shortcuts like Ctrl+B for bold, Ctrl+I for italic, etc."></te
                             <span class="shortcut-desc">Find Next</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Typing SVG Modal -->
+    <div id="typingSvgModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Typing SVG Animation</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="titles-header">
+                        <label>Text:</label>
+                        <button type="button" id="addTitleBtn" class="btn btn-small btn-primary" title="Add Title">
+                            <span class="icon">+</span>
+                        </button>
+                    </div>
+                    <div id="titlesContainer">
+                        <div class="title-input-group">
+                            <input type="text" class="form-input title-input" placeholder="add text">
+                            <button type="button" class="btn btn-small btn-danger remove-title-btn" title="Remove Title">
+                                <span class="icon">-</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="svgColor">Color:</label>
+                    <div class="color-input-group">
+                        <input type="text" id="svgColor" placeholder="F75C7E" value="F75C7E" class="form-input color-text-input">
+                        <input type="color" id="colorPicker" value="#F75C7E" class="color-picker" title="Pick Color">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="svgFont">Font:</label>
+                    <select id="svgFont" class="form-input">
+                        <option value="Fira+Code">Fira Code</option>
+                        <option value="JetBrains+Mono">JetBrains Mono</option>
+                        <option value="Roboto+Mono">Roboto Mono</option>
+                        <option value="Ubuntu+Mono">Ubuntu Mono</option>
+                        <option value="Source+Code+Pro">Source Code Pro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="svgSize">Font Size:</label>
+                    <input type="number" id="svgSize" value="22" min="10" max="50" class="form-input">
+                </div>
+                
+                <div class="modal-actions">
+                    <button id="generateTypingSvg" class="btn btn-primary">Generate Typing SVG</button>
+                    <button class="btn btn-secondary modal-close">Cancel</button>
                 </div>
             </div>
         </div>
