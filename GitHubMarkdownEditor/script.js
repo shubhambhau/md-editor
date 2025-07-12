@@ -209,6 +209,8 @@ class MarkdownEditor {
             e.stopPropagation();
             this.showEmojiPicker();
         });
+        document.getElementById('githubStatsBtn').addEventListener('click', () => this.insertGitHubStats());
+        document.getElementById('typingSvgBtn').addEventListener('click', () => this.insertTypingSvg());
         document.getElementById('footnoteBtn').addEventListener('click', () => this.insertFootnote());
         document.getElementById('helpBtn').addEventListener('click', () => this.showModal('helpModal'));
         
@@ -236,6 +238,16 @@ class MarkdownEditor {
         // Upload area
         const uploadArea = document.getElementById('uploadArea');
         uploadArea.addEventListener('click', () => document.getElementById('fileInput').click());
+        
+        // Typing SVG generate button
+        document.getElementById('generateTypingSvg').addEventListener('click', () => this.generateTypingSvg());
+        
+        // Add title button
+        document.getElementById('addTitleBtn').addEventListener('click', () => this.addTitleInput());
+        
+        // Color picker sync
+        document.getElementById('colorPicker').addEventListener('input', (e) => this.syncColorPicker(e));
+        document.getElementById('svgColor').addEventListener('input', (e) => this.syncColorText(e));
     }
 
     handleKeyboardShortcuts(e) {
@@ -652,6 +664,156 @@ class MarkdownEditor {
         this.insertAtCursor(definition);
         
         this.footnoteCounter++;
+    }
+
+    insertGitHubStats() {
+        // Prompt user for GitHub username
+        const username = prompt('Enter your GitHub username:');
+        
+        if (!username || username.trim() === '') {
+            return; // User cancelled or entered empty username
+        }
+        
+        const cleanUsername = username.trim();
+        
+        // GitHub stats markdown template
+        const githubStatsMarkdown = `<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=${cleanUsername}&show_icons=true&theme=react&hide_border=true" alt="GitHub Stats" />
+  <br/>
+  <img src="https://github-readme-streak-stats.herokuapp.com?user=${cleanUsername}&theme=react&hide_border=true" alt="GitHub Streak" />
+  <br/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=${cleanUsername}&layout=compact&theme=react&hide_border=true" alt="Top Languages" />
+</p>
+
+`;
+        
+        this.insertAtCursor(githubStatsMarkdown);
+    }
+
+    insertTypingSvg() {
+        // Show the Typing SVG modal
+        this.showModal('typingSvgModal');
+        // Initialize with one title input if none exist
+        this.initializeTitleInputs();
+    }
+
+    initializeTitleInputs() {
+        const container = document.getElementById('titlesContainer');
+        if (container.children.length === 0) {
+            this.addTitleInput();
+        }
+    }
+
+    addTitleInput() {
+        const container = document.getElementById('titlesContainer');
+        const titleGroup = document.createElement('div');
+        titleGroup.className = 'title-input-group';
+        
+        titleGroup.innerHTML = `
+            <input type="text" class="form-input title-input">
+            <button type="button" class="btn btn-small btn-danger remove-title-btn" title="Remove Title">
+                <span class="icon">-</span>
+            </button>
+        `;
+        
+        // Add event listener to remove button
+        const removeBtn = titleGroup.querySelector('.remove-title-btn');
+        removeBtn.addEventListener('click', () => this.removeTitleInput(titleGroup));
+        
+        container.appendChild(titleGroup);
+        
+        // Focus on the new input
+        const newInput = titleGroup.querySelector('.title-input');
+        newInput.focus();
+    }
+
+    removeTitleInput(titleGroup) {
+        const container = document.getElementById('titlesContainer');
+        // Keep at least one title input
+        if (container.children.length > 1) {
+            titleGroup.remove();
+        } else {
+            alert('At least one title is required');
+        }
+    }
+
+    syncColorPicker(e) {
+        const colorValue = e.target.value;
+        const hexValue = colorValue.replace('#', '');
+        document.getElementById('svgColor').value = hexValue;
+    }
+
+    syncColorText(e) {
+        let colorValue = e.target.value.trim();
+        // Remove # if user adds it
+        colorValue = colorValue.replace('#', '');
+        
+        // Validate hex color (3 or 6 characters)
+        if (/^[0-9A-Fa-f]{3}$|^[0-9A-Fa-f]{6}$/.test(colorValue)) {
+            // Expand 3-char hex to 6-char
+            if (colorValue.length === 3) {
+                colorValue = colorValue.split('').map(char => char + char).join('');
+            }
+            document.getElementById('colorPicker').value = '#' + colorValue;
+        }
+    }
+
+    generateTypingSvg() {
+        // Get values from form inputs
+        const color = document.getElementById('svgColor').value.trim() || 'F75C7E';
+        const font = document.getElementById('svgFont').value;
+        const size = document.getElementById('svgSize').value || '22';
+        
+        // Get all title inputs
+        const titleInputs = document.querySelectorAll('.title-input');
+        const titles = Array.from(titleInputs)
+            .map(input => input.value.trim())
+            .filter(title => title !== ''); // Remove empty titles
+        
+        // Validate required fields
+        if (titles.length === 0) {
+            alert('Please add at least one title/role');
+            return;
+        }
+        
+        // Build the lines for the typing animation (just the titles)
+        const lines = [...titles];
+        
+        
+        
+        // URL encode the lines
+        const encodedLines = encodeURIComponent(lines.join(';'));
+        
+        // Clean color value (remove # if present)
+        const cleanColor = color.replace('#', '');
+        
+        // Generate typing SVG markdown
+        const typingSvgMarkdown = `<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=${font}&size=${size}&duration=3000&pause=1000&color=${cleanColor}&center=true&vCenter=true&width=435&lines=${encodedLines}" alt="Typing SVG" />
+</p>
+
+`;
+        
+        // Insert the markdown
+        this.insertAtCursor(typingSvgMarkdown);
+        
+        // Close the modal
+        document.getElementById('typingSvgModal').classList.remove('active');
+        
+        // Clear the form
+        this.clearTypingSvgForm();
+    }
+
+    clearTypingSvgForm() {
+        document.getElementById('svgColor').value = 'F75C7E';
+        document.getElementById('colorPicker').value = '#F75C7E';
+        document.getElementById('svgFont').value = 'Fira+Code';
+        document.getElementById('svgSize').value = '22';
+        
+        // Clear all title inputs and reset to one empty input
+        const container = document.getElementById('titlesContainer');
+        container.innerHTML = '';
+        this.addTitleInput();
     }
 
     insertAlert(type) {
